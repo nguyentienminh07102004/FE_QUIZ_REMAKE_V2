@@ -31,8 +31,8 @@ export default function NumberOfPlayerParticipatingChart({
 	}, [limit]);
 	return (
 		<>
-			<ResponsiveContainer width="100%" height={250}>
-				<BarChart data={data}>
+			<ResponsiveContainer width={250} height={250}>
+				<BarChart data={data} layout="radial">
 					<XAxis
 						dataKey="test"
 						tickFormatter={(id: string) => id.substring(0, 5) + "..."}
@@ -54,9 +54,6 @@ export default function NumberOfPlayerParticipatingChart({
 					<Tooltip cursor={true} />
 				</BarChart>
 			</ResponsiveContainer>
-			<h1 className="text-center text-2xl">
-				Top {limit} bài thi làm nhiều nhất
-			</h1>
 		</>
 	);
 }

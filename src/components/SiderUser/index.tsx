@@ -25,7 +25,6 @@ export default function SiderUser() {
 				limit: 10,
 			});
 			const pagedModelCategory: PagedModel<CategoryResponse> = res.data;
-			console.log(pagedModelCategory);
 			pagedModelCategory.content.forEach(
 				(category) => (category.key = category.code)
 			);

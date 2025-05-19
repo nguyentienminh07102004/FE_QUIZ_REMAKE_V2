@@ -24,7 +24,7 @@ export default function HeaderUser(): React.ReactElement {
 				</div>
 				<SearchInput name="title" />
 				<div>
-					<Dropdown placement="bottomCenter" arrow menu={{items: [
+					<Dropdown placement="bottom" arrow menu={{items: [
 						{
 							key: "profile",
 							label: <Link href="/profile">Profile</Link>

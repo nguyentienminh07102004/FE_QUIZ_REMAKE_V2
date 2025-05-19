@@ -13,11 +13,9 @@ export default function ButtonLoginGoogle() {
 	const url: string = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&scope=${scope}&redirect_uri=${redirect_uri}&response_type=code&prompt=consent select_account`;
 	React.useEffect(() => {
 		const code: string | null = searchParams.get("code");
+		console.log(code);
 		if (code !== null) {
-			const loginGoogle2 = async () => {
-				await LoginGoogle({ code });
-			};
-			loginGoogle2();
+			LoginGoogle({ code });
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
