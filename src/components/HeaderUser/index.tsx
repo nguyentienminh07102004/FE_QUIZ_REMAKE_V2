@@ -1,44 +1,64 @@
 "use client";
 
+import apis from "@/apis/base";
 import { logoutService } from "@/apis/UserService";
 import SearchInput from "@/components/SearchInput";
 import { Avatar } from "@radix-ui/themes";
-import { Dropdown } from "antd";
+import { Button, Dropdown, Form, Input, message, Modal } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 
 export default function HeaderUser(): React.ReactElement {
 	const router = useRouter();
-	const  logout = async () => {
+	const [isModalVisible, setIsModalVisible] = useState(false);
+	const logout = async () => {
 		await logoutService();
-		router.replace('/login');
-	}
+		router.replace("/login");
+	};
 	return (
-		<>
-			<div className="flex justify-between items-center bg-[#BDBDDB] p-2 rounded-lg w-full">
-				<div className="flex items-center cursor-pointer">
-					<Image src="/quiz.jpg" alt="Logo" width="100" height="100" />
-					<h1 className="text-xl font-black text-green-500 ms-2">QUIZ</h1>
-				</div>
-				<SearchInput name="title" />
-				<div>
-					<Dropdown placement="bottom" arrow menu={{items: [
-						{
-							key: "profile",
-							label: <Link href="/profile">Profile</Link>
-						},
-						{
-							key: "logout",
-							label: "Logout",
-							onClick: async () => await logout()
-						}
-					]}}>
-						<Avatar src="/default-avatar.jpg" className="cursor-pointer" size="4" fallback="/default-avatar.jpg" />
-					</Dropdown>
-				</div>
+		<div className="flex w-full items-center justify-between">
+			<div className="flex items-center gap-4">
+				<Avatar src="/quiz.jpg" fallback="Q" size="4" radius="full" />
+				<span className="text-xl font-bold text-green-600">QUIZ</span>
 			</div>
-		</>
+			<div className="flex-1 px-8">
+				<SearchInput name="title" />
+			</div>
+			<div>
+				<Dropdown
+					placement="bottom"
+					arrow
+					menu={{
+						items: [
+							{
+								key: "profile",
+								label: <Link href="/profile">Profile</Link>,
+							},
+							{
+								key: "Test Details",
+								label: (
+									<Link href="/test-result">Test Details</Link>
+								),
+							},
+							{
+								key: "logout",
+								label: "Logout",
+								onClick: async () => await logout(),
+							},
+						],
+					}}
+				>
+					<Avatar
+						src="/default-avatar.jpg"
+						className="cursor-pointer"
+						size="4"
+						fallback="A"
+						radius="full"
+					/>
+				</Dropdown>
+			</div>
+		</div>
 	);
 }

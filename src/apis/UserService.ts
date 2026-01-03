@@ -8,13 +8,7 @@ import { jwtDecode } from "jwt-decode";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
-export const LoginAPI = async ({
-	email,
-	password,
-}: {
-	email: string | undefined;
-	password: string | undefined;
-}) => {
+export const LoginAPI = async ({ email, password }: { email: string | undefined; password: string | undefined }) => {
 	const res: APIResponse = (
 		await apis.post("/users/login", {
 			email,
@@ -37,8 +31,7 @@ export const LoginAPI = async ({
 };
 
 export const LoginGoogle = async ({ code }: { code: string }) => {
-	const res: APIResponse = (await apis.post("/users/login/google", { code }))
-		.data;
+	const res: APIResponse = (await apis.post("/users/login/google", { code })).data;
 	const jwt: JWTEntity = res.data;
 	const cookieStorage = await cookies();
 	cookieStorage.set("token", jwt.token, {
@@ -53,9 +46,7 @@ export const LoginGoogle = async ({ code }: { code: string }) => {
 	}
 };
 
-export const findAllUser = async (
-	request: UserSearchRequest
-): Promise<APIResponse> => {
+export const findAllUser = async (request: UserSearchRequest): Promise<APIResponse> => {
 	return (await apis.get("/users", { params: request })).data;
 };
 
@@ -68,31 +59,63 @@ export const changeUserStatusService = async (ids: string[] | string) => {
 };
 
 export const uploadAvatar = async (avatar: FormData) => {
-	return (await apis.post('/users/upload-avatar', avatar, {
-		headers: {
-			"Authorization": `Bearer ${await GetToken()}`,
-			"Content-Type": "multipart/form-data"
-		},
-	})).data;
-}
+	return (
+		await apis.post("/users/upload-avatar", avatar, {
+			headers: {
+				Authorization: `Bearer ${await GetToken()}`,
+				"Content-Type": "multipart/form-data",
+			},
+		})
+	).data;
+};
 
 export const registerUserAPI = async (user: UserRegister) => {
-	return (await apis.post('/users/register', user)).data;
-}
+	return (await apis.post("/users/register", user)).data;
+};
 
 export const logoutService = async () => {
-	await apis.post('/users/logout', {}, {
-		headers: {
-			"Authorization": `Bearer ${await GetToken()}`
+	await apis.post(
+		"/users/logout",
+		{},
+		{
+			headers: {
+				Authorization: `Bearer ${await GetToken()}`,
+			},
 		}
-	});
-}
+	);
+};
 
 export const getUserInfo = async () => {
-	const res: APIResponse = (await apis.get("/users/my-info", {
-		headers: {
-			"Authorization": `Bearer ${await GetToken()}`
-		}
-	})).data;
+	const res: APIResponse = (
+		await apis.get("/users/my-info", {
+			headers: {
+				Authorization: `Bearer ${await GetToken()}`,
+			},
+		})
+	).data;
 	return res.data;
 };
+
+export async function ForgotPasswordService(email: string) {
+	const res = await apis.post(
+		"/users/forgot-password",
+		{ email: email },
+		{
+			headers: {
+				"Content-Type": "application/json",
+			},
+		}
+	);
+	return res.data;
+}
+
+export async function ResetPasswordService(code: string, newPassword: string, confirmPassword: string) {
+	const res = await apis.put("/users/forgot-password", { code, newPassword, confirmPassword },
+		{
+			headers: {
+				"Content-Type": "application/json",
+			},
+		}
+	);
+	return res.data;
+}

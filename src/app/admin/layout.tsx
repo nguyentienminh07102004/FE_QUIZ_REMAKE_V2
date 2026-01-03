@@ -1,19 +1,20 @@
 import { JWTDecoder } from "@/types/Jwt";
-import { Image, Layout, Menu, MenuProps } from "antd";
+import { Dropdown, Image, Layout, Menu, MenuProps } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import { jwtDecode } from "jwt-decode";
 import { cookies, headers } from "next/headers";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { FaRegUser } from "react-icons/fa6";
 import { GrDocumentTest } from "react-icons/gr";
 import {
 	MdDashboard,
-	MdHistoryEdu,
 	MdOutlineCategory,
-	MdOutlineQuestionMark,
+	MdOutlineQuestionMark
 } from "react-icons/md";
+import HeaderComponent from "./HeaderComponent";
+import GetToken from "@/commons/utils/GetToken";
+import { FaRegUser } from "react-icons/fa6";
 
 export default async function DashboardAdmin({
 	children,
@@ -37,11 +38,6 @@ export default async function DashboardAdmin({
 			icon: <MdDashboard />,
 		},
 		{
-			key: "/admin/users",
-			label: <Link href="/admin/users">User</Link>,
-			icon: <FaRegUser />,
-		},
-		{
 			key: "/admin/categories",
 			label: <Link href="/admin/categories">Category</Link>,
 			icon: <MdOutlineCategory />,
@@ -56,7 +52,19 @@ export default async function DashboardAdmin({
 			label: <Link href="/admin/tests">Test</Link>,
 			icon: <GrDocumentTest />,
 		},
+		{
+			key: "/admin/user-test-results",
+			label: <Link href="/admin/user-test-results">User Test Results</Link>,
+			icon: <GrDocumentTest />,
+		},
 	];
+	if (jwtDecoder.scope.includes("ADMIN")) {
+		menuItems.push({
+			key: "/admin/users",
+			label: <Link href="/admin/users">User</Link>,
+			icon: <FaRegUser />,
+		})
+	}
 	return (
 		<>
 			<Layout hasSider>
@@ -77,7 +85,9 @@ export default async function DashboardAdmin({
 				</Sider>
 				<Layout>
 					<Header className="overflow-auto sticky top-0 left-0 start-0 z-50">
-						
+						<Dropdown className="flex items-center justify-end w-full">
+							<HeaderComponent token={token?.value} />
+						</Dropdown>
 					</Header>
 					<Content className="m-5 bg-white p-2">{children}</Content>
 				</Layout>

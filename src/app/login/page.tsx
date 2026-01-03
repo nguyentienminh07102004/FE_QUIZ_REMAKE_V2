@@ -6,6 +6,7 @@ import Link from "next/link";
 import { Form } from "radix-ui";
 import React from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import ForgotPassword from "./ForgotPassword";
 
 export default function Login() {
 	const [showPassword, setShowPassword] = React.useState<boolean>(false);
@@ -95,8 +96,9 @@ export default function Login() {
 						<ButtonLoginGoogle />
 					</div>
 				</Form.Root>
-				<div className="mt-3 text-blue-200">
+				<div className="mt-3 text-blue-200 flex justify-evenly items-center">
 					<Link href="/register">You don't have account? Register</Link>
+					<ForgotPassword />
 				</div>
 			</div>
 		</>

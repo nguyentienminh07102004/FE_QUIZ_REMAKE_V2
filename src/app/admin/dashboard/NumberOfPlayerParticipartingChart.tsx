@@ -31,27 +31,28 @@ export default function NumberOfPlayerParticipatingChart({
 	}, [limit]);
 	return (
 		<>
-			<ResponsiveContainer width={250} height={250}>
-				<BarChart data={data} layout="radial">
+			<ResponsiveContainer width="100%" height={400}>
+				<BarChart data={data} layout="vertical">
 					<XAxis
-						dataKey="test"
-						tickFormatter={(id: string) => id.substring(0, 5) + "..."}
+						type="number"
+						dataKey="numberOfPlayers"
+						name="Number of Participants"
+						allowDecimals={false}
 					/>
 					<YAxis
-						dataKey="numberOfPlayers"
-						name="number of participants"
+						type="category"
+						dataKey="test"
+						width={100}
+						tickFormatter={(id: string) => id.length > 10 ? id.substring(0, 10) + "..." : id}
 					/>
-					<Bar dataKey="numberOfPlayers" fill="#82ca9d">
+					<Bar dataKey="numberOfPlayers" fill="#4caf50" barSize={20}>
 						<LabelList
-							dataKey="test"
-							formatter={(testId: string) =>
-								testId.substring(0, 8) + "..."
-							}
-							position="inside"
-							angle={-45}
+							dataKey="numberOfPlayers"
+							position="insideRight"
+							style={{ fill: "#fff", fontSize: 12 }}
 						/>
 					</Bar>
-					<Tooltip cursor={true} />
+					<Tooltip cursor={{ fill: "rgba(0, 0, 0, 0.1)" }} />
 				</BarChart>
 			</ResponsiveContainer>
 		</>
